@@ -1,0 +1,5 @@
+{
+  "server_address": "0.0.0.0:8080",
+  "db_connection_string": "postgres://wb_user:12345@localhost:5432/wb_orders_db?sslmode=disable",
+  "kafka_brokers": ["localhost:9092"]
+}
