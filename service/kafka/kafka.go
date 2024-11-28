@@ -12,8 +12,6 @@ import (
 )
 
 var logger *zap.Logger
-
-// Инициализация логгера
 func InitLogger(l *zap.Logger) {
 	logger = l
 }
@@ -59,9 +57,7 @@ func ConsumeMessages(db *sql.DB, kafkaBrokers []string) {
 		MinBytes:    10e3,
 		MaxBytes:    10e6,
 	})
-
 	defer r.Close()
-
 	for {
 		msg, err := r.ReadMessage(context.Background())
 		if err != nil {

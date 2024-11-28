@@ -10,18 +10,16 @@ import (
 
 var (
 	OrderCache sync.Map
-	zapLogger  *zap.Logger // Переименовали переменную logger на zapLogger
+	zapLogger  *zap.Logger
 )
-
-// Инициализация логгера
 func InitLoggerSer(l *zap.Logger) {
-	zapLogger = l // Обновили имя переменной
+	zapLogger = l
 }
 
 func LoadOrdersFromJSON(filename string, db *sql.DB) {
 	order, err := readJSONFile(filename)
 	if err != nil {
-		zapLogger.Error("Ошибка при чтении JSON файла", zap.String("filename", filename), zap.Error(err)) // Обновили имя переменной
+		zapLogger.Error("Ошибка при чтении JSON файла", zap.String("filename", filename), zap.Error(err))
 		return
 	}
 
@@ -42,7 +40,7 @@ func readJSONFile(filename string) (Order, error) {
 func saveToDB(order Order, db *sql.DB) {
 	itemsJSON, err := json.Marshal(order.Items)
 	if err != nil {
-		zapLogger.Fatal("Ошибка при маршализации элементов заказа", zap.String("orderUID", order.OrderUID), zap.Error(err)) // Обновили имя переменной
+		zapLogger.Fatal("Ошибка при маршализации элементов заказа", zap.String("orderUID", order.OrderUID), zap.Error(err))
 	}
 
 	_, err = db.Exec(`INSERT INTO orders (
@@ -69,9 +67,9 @@ func saveToDB(order Order, db *sql.DB) {
 		order.DateCreated, order.OofShard)
 
 	if err != nil {
-		zapLogger.Error("Ошибка при вставке заказа в базу данных", zap.String("orderUID", order.OrderUID), zap.Error(err)) // Обновили имя переменной
-		return // или обработка ошибки
+		zapLogger.Error("Ошибка при вставке заказа в базу данных", zap.String("orderUID", order.OrderUID), zap.Error(err))
+		return
 	}
 
-	zapLogger.Info("Заказ успешно сохранен в базу данных", zap.String("orderUID", order.OrderUID)) // Обновили имя переменной
+	zapLogger.Info("Заказ успешно сохранен в базу данных", zap.String("orderUID", order.OrderUID))
 }

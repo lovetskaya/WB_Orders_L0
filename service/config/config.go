@@ -17,7 +17,7 @@ func LoadConfig() (Config, error) {
 	var cfg Config
 	file, err := os.Open("service/config/config.json")
 	if err != nil {
-		return cfg, fmt.Errorf("ошибка при открытии файла: %w", err)
+		return cfg, fmt.Errorf("Ошибка при открытии файла: %w", err)
 	}
 
 	decoder := json.NewDecoder(file)
@@ -26,15 +26,12 @@ func LoadConfig() (Config, error) {
 }
 
 func NewLogger() (*zap.Logger, error) {
-	// Настройка конфигурации логгера
 	config := zap.Config{
 		Level:            zap.NewAtomicLevelAt(zap.InfoLevel),
 		Encoding:         "json",
-		OutputPaths:      []string{"logger/app.log"}, // Указываем файл для записи логов
+		OutputPaths:      []string{"logger/app.log"}, // Файл для записи логов
 		ErrorOutputPaths: []string{"stderr"},
 		EncoderConfig:    zap.NewProductionEncoderConfig(),
 	}
-
-	// Создание логгера
 	return config.Build()
 }

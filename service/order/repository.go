@@ -7,8 +7,6 @@ import (
 )
 
 var logger *zap.Logger
-
-// Инициализация логгера
 func InitLoggerRep(l *zap.Logger) {
 	logger = l
 }

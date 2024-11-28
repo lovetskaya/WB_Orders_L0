@@ -13,7 +13,6 @@ var (
 	logger     *zap.Logger
 )
 
-// Инициализация логгера
 func InitLogger(l *zap.Logger) {
 	logger = l
 }
@@ -28,7 +27,6 @@ func RestoreCache(db *sql.DB) {
 	for rows.Next() {
 		var order order.Order
 		var itemsJSON string
-
 		err := rows.Scan(&order.OrderUID, &order.TrackNumber, &order.Entry,
 			&order.Delivery.Name, &order.Delivery.Phone, &order.Delivery.Zip,
 			&order.Delivery.City, &order.Delivery.Address, &order.Delivery.Region,
@@ -38,12 +36,10 @@ func RestoreCache(db *sql.DB) {
 			&order.Payment.GoodsTotal, &order.Payment.CustomFee, &itemsJSON,
 			&order.Locale, &order.InternalSignature, &order.CustomerID,
 			&order.DeliveryService, &order.ShardKey, &order.SMID, &order.DateCreated, &order.OofShard)
-
 		if err != nil {
 			logger.Warn("Ошибка при сканировании строки", zap.Error(err))
 			continue
 		}
-
 		if err := json.Unmarshal([]byte(itemsJSON), &order.Items); err != nil {
 			logger.Warn("Ошибка при десериализации JSON элементов", zap.Error(err))
 			continue

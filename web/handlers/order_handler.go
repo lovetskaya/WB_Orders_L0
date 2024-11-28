@@ -9,7 +9,7 @@ import (
 	"wb_service_order/service/cache"
 	"wb_service_order/service/order"
 )
-var logger *zap.Logger // Объявляем логгер
+var logger *zap.Logger
 func InitLogger(l *zap.Logger) {
 	logger = l
 }
@@ -25,7 +25,7 @@ func GetOrder(logger *zap.Logger, db *sql.DB) http.HandlerFunc {
 			order, ok := res.(order.Order)
 			if !ok {
 				logger.Warn("Неверный тип данных в кэше для заказа", zap.String("orderUID", orderUID))
-				http.Error(w, "Invalid order data", http.StatusInternalServerError)
+				http.Error(w, "Неверные данные заказа", http.StatusInternalServerError)
 				return
 			}
 			renderOrder(logger, w, order)
@@ -35,11 +35,10 @@ func GetOrder(logger *zap.Logger, db *sql.DB) http.HandlerFunc {
 		// Если заказа нет в кэше, пытаемся получить его из базы данных
 		order := getOrderFromDB(orderUID, db)
 		if order.OrderUID == "" {
-			http.Error(w, "Order not found", http.StatusNotFound)
+			http.Error(w, "Заказ не найден", http.StatusNotFound)
 			logger.Warn("Заказ не найден в базе данных", zap.String("orderUID", orderUID))
 			return
 		}
-
 		// Сохраняем заказ в кэше
 		cache.OrderCache.Store(orderUID, order)
 		renderOrder(logger, w, order)
@@ -49,21 +48,20 @@ func GetOrder(logger *zap.Logger, db *sql.DB) http.HandlerFunc {
 func renderOrder(logger *zap.Logger, w http.ResponseWriter, order order.Order) {
 	tmpl, err := template.ParseFiles("/Users/polinaloveckaya/GolandProjects/WB_Orders/wb_service_order/web/templates/index.html")
 	if err != nil {
-		logger.Error("Failed to load template", zap.Error(err))
-		http.Error(w, "Failed to load template", http.StatusInternalServerError)
+		logger.Error("Не удалось загрузить шаблон", zap.Error(err))
+		http.Error(w, "Не удалось загрузить шаблон", http.StatusInternalServerError)
 		return
 	}
 
 	if err := tmpl.Execute(w, order); err != nil {
-		logger.Error("Failed to execute template", zap.Error(err))
-		http.Error(w, "Failed to execute template", http.StatusInternalServerError)
+		logger.Error("Не удалось выполнить шаблон", zap.Error(err))
+		http.Error(w, "Не удалось выполнить шаблон", http.StatusInternalServerError)
 	}
 }
 
 func getOrderFromDB(orderUID string, db *sql.DB) order.Order {
 	var order order.Order
 	var itemsJSON string
-
 	row := db.QueryRow(`SELECT 
 		order_uid, track_number, entry, delivery_name, delivery_phone, 
 		delivery_zip, delivery_city, delivery_address, delivery_region, 
@@ -74,7 +72,6 @@ func getOrderFromDB(orderUID string, db *sql.DB) order.Order {
 		internal_signature, customer_id, delivery_service, shardkey, 
 		sm_id, date_created, oof_shard 
 	FROM orders WHERE order_uid = $1`, orderUID)
-
 	err := row.Scan(
 		&order.OrderUID, &order.TrackNumber, &order.Entry,
 		&order.Delivery.Name, &order.Delivery.Phone, &order.Delivery.Zip,
@@ -87,7 +84,6 @@ func getOrderFromDB(orderUID string, db *sql.DB) order.Order {
 		&order.DeliveryService, &order.ShardKey, &order.SMID,
 		&order.DateCreated, &order.OofShard,
 	)
-
 	if err != nil {
 		if err == sql.ErrNoRows {
 			logger.Warn("Заказ не найден для", zap.String("orderUID", orderUID))
