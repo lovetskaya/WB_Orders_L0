@@ -14,21 +14,20 @@ import (
 )
 
 func TestGetItem(t *testing.T) {
-	// Инициализируем логгер
 	logger, err := zap.NewProduction()
 	if err != nil {
 		t.Fatalf("Ошибка при инициализации логгера: %s", err)
 	}
 	defer logger.Sync() // Отложить синхронизацию
 
-	// Создаем mock для базы данных
+	// mock для базы данных
 	db, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("Ошибка при создании mock базы данных: %s", err)
 	}
 	defer db.Close()
 
-	// Создаем тестовый заказ
+	//Тест-заказ
 	cell := order.Order{
 		OrderUID:          "b563feb7b2b84b6test",
 		TrackNumber:       "track123",
@@ -46,7 +45,7 @@ func TestGetItem(t *testing.T) {
 		OofShard:         "oof_shard",
 	}
 
-	// Ожидаем, что будет выполнен SQL-запрос на получение заказа
+	// Выполнение SQL-запроса для получение заказа
 	mock.ExpectQuery(`SELECT order_uid, track_number, entry, delivery_name`).
 		WithArgs(cell.OrderUID).
 		WillReturnRows(sqlmock.NewRows([]string{
@@ -70,28 +69,22 @@ func TestGetItem(t *testing.T) {
 	))
 
 
-	// Создаем тестовый HTTP-запрос
 	req, err := http.NewRequest("GET", "/order?id="+cell.OrderUID, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(handlers.GetOrder(logger, db)) // ваш обработчик
+	handler := http.HandlerFunc(handlers.GetOrder(logger, db))
 
 	handler.ServeHTTP(rr, req)
 
-	// Проверяем статус ответа
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
 	}
-
-	// Проверяем содержимое ответа
-	// Здесь мы ожидаем, что HTML-ответ будет содержать определенные значения.
-	// Для этого мы можем использовать rr.Body.String() для извлечения HTML-контента.
+	// rr.Body.String() для извлечения HTML-контента.
 	responseBody := rr.Body.String()
-
-	// Проверяем, что ответ содержит ожидаемые значения
+	// Проверка ожидаемого значения
 	if !contains(responseBody, cell.OrderUID) {
 		t.Errorf("handler returned unexpected OrderUID: got %v want %v", responseBody, cell.OrderUID)
 	}
@@ -105,9 +98,6 @@ func TestGetItem(t *testing.T) {
 		t.Errorf("handler returned unexpected Payment Transaction: got %v want %v", responseBody, cell.Payment.Transaction)
 	}
 }
-
-
-// Helper function to check if a string contains a substring
 func contains(s, substr string) bool {
 	return strings.Contains(s, substr)
 }
