@@ -33,7 +33,7 @@ Docker, docker-compose
 ## Развертывание
 1. Клонирование репозитория
 
-```git clone https://github.com/OkulusDev/Oxygen.git```
+```git clone https://github.com/lovetskaya/WB_Orders_L0.git```
 
 2. Переход в рабочую директорию
 
@@ -87,7 +87,7 @@ CREATE TABLE orders (
 
 [http://localhost:8080/order?id=1](http://localhost:8080/order?id=b563feb7b2b84b6test)
 
-В параметр id GET-запроса необходимо подставить ID требующегося заказа. При переходе по ссылке выше отобразится информация о заказе с id = 1.
+В параметр id GET-запроса необходимо подставить ID требующегося заказа. При переходе по ссылке выше отобразится информация о заказе с id = b563feb7b2b84b6test.
 
 ## Запуск сервиса в Docker
 Соберите Docker-образы с использованием переменной окружения APP_ENV=docker и запустите конейнеры в фоновом режиме:
