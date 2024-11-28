@@ -37,13 +37,13 @@ Docker, docker-compose
 
 2. Переход в рабочую директорию
 
-```cd Oxygen```
+```cd wb_service_order```
 
 3. Установка зависимостей
 
 ```go mod tidy```
 
-4. Создайте файл конфигурации в корневой директории проекта с именем config.docker.yaml и опишите его [вот так](./docs/ru/index.md)
+4. Создайте файл конфигурации в корневой директории проекта с именем config.docker.yaml и опишите его [вот так](docker-compose.yml)
 
 ## Настройка базы данных
 
@@ -85,7 +85,7 @@ CREATE TABLE orders (
 ```
 ## Данные о заказе доступны по адресу:
 
-[http://localhost:8080/order?id=1](http://localhost:8080/order?id=b563feb7b2b84b6test)
+[[http://localhost:8080/order?id=b563feb7b2b84b6test](http://localhost:8080/order?id=b563feb7b2b84b6test)]
 
 В параметр id GET-запроса необходимо подставить ID требующегося заказа. При переходе по ссылке выше отобразится информация о заказе с id = b563feb7b2b84b6test.
 
