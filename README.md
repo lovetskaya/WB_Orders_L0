@@ -24,11 +24,11 @@
 6. Логи в JSON-формате делают их более удобными для машинной обработки
 
 ## Требования
-Go 1.22.3
-PostgreSQL
-Kafka & Zookeper
-WRK/Vegeta
-Docker, docker-compose
+* Go 1.22.3
+* PostgreSQL
+* Kafka & Zookeper
+* WRK/Vegeta
+* Docker, docker-compose
 
 ## Развертывание
 1. Клонирование репозитория
