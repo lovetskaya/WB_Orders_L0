@@ -43,7 +43,7 @@ services:
       - zookeeper
 
   redpanda-console:
-    image: redpanda/redpanda-console:latest
+    image: vectorized/redpanda
     ports:
       - "8081:8080"
     environment:
