@@ -187,51 +187,52 @@
     <div class="card">
         <h3>Items Information</h3>
         <table>
-            <thead>
+            {{ range .Items }}
             <tr>
                 <th>Chrt ID</th>
-                <td>{{.ChrtID}}</td>
+                <td>{{ .ChrtID }}</td>
             </tr>
             <tr>
                 <th>Track Number</th>
-                <td>{{.TrackNumber}}</td>
+                <td>{{ .TrackNumber }}</td>
             </tr>
             <tr>
                 <th>Price</th>
-                <td>{{.Price}}</td>
+                <td>{{ .Price }}</td>
             </tr>
             <tr>
                 <th>Rid</th>
-                <td>{{.Rid}}</td>
+                <td>{{ .Rid }}</td>
             </tr>
             <tr>
                 <th>Name</th>
-                <td>{{.Name}}</td>
+                <td>{{ .Name }}</td>
             </tr>
             <tr>
                 <th>Sale</th>
-                <td>{{.Sale}}</td>
+                <td>{{ .Sale }}</td>
             </tr>
             <tr>
                 <th>Size</th>
-                <td>{{.Size}}</td>
+                <td>{{ .Size }}</td>
             </tr>
             <tr>
                 <th>Total Price</th>
-                <td>{{.TotalPrice}}</td>
+                <td>{{ .TotalPrice }}</td>
             </tr>
             <tr>
                 <th>Nm ID</th>
-                <td>{{.NmID}}</td>
+                <td>{{ .NmID }}</td>
             </tr>
             <tr>
                 <th>Brand</th>
-                <td>{{.Brand}}</td>
+                <td>{{ .Brand }}</td>
             </tr>
             <tr>
                 <th>Status</th>
-                <td>{{.Status}}</td>
+                <td>{{ .Status }}</td>
             </tr>
+            {{ end }}
         </table>
     </div>
 </div>
