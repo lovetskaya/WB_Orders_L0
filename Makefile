@@ -36,7 +36,6 @@ vegeta-docker:
 	@echo "Running vegeta test on /order endpoint (Docker)"
 	vegeta attack -duration=30s -rate=10/s -targets=targets.txt > results.bin
 
-
 test-docker: wrk-docker vegeta-docker
 	@echo "Completed Docker tests with wrk and vegeta"
 	@echo "Docker vegeta metrics saved to metrics-docker.json and plot to plot-docker.html"
